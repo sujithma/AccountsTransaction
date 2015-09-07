@@ -11,6 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function() {
+	 // header("Access-Control-Allow-Origin: *");
+    return Response::json(['name' => 'Sujith']);
 });
+
+Route::group(['middleware' => 'cors'], function()
+{
+    Route::get('/login','Auth\AuthController@login');
+
+
+   
+});
+
+ Route::post('/logind',function(){
+ 	 //header("Access-Control-Allow-Origin: x-requested-with");
+ 	 // return Response::json(['name' => 'Sujith']);
+ 	 return response(['name' => 'Sujith22'])
+ 	 			->header('Access-Control-Allow-Origin', 'x-requested-with');
+ });

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -61,5 +61,82 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+    protected function postLogin(array $data){
+       {
+        
+        $rules = array(
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+         );
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()){
+            // If validation falis redirect back to login.
+               // return redirect()->intended('/login')->withErrors($validator);
+            }
+            else{
+
+            if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
+            // Authentication passed...
+                 if(Auth::user()->status == '0')
+                 {
+                    if(Auth::user()->role_id == '2'){
+                        //return redirect('/home');
+                    }else{
+                        return redirect()->intended('/admin');
+                    }
+                  }
+                  else{
+
+                     //return redirect('/logout');
+                  }
+
+            }
+            else{
+                //return redirect('/login');
+            }
+        }
+        
+
+    }
+    
+
+    }
+
+    protected function postRegister(array $data){
+        if($this->validator($data)){
+
+            $user= new User;
+
+            $user->name=$data['name'];
+            $user->email=$data['email'];
+            $user->password=$data['password'];
+            $user->role_id='1';
+
+            $user->save();
+
+        }
+        else{
+
+        }
+
+    }
+    protected function plogin(){
+        $data   =   [];
+
+        $data['email'] = \Input::get('email');
+        $data['us'] =   'hii';
+
+        //$data = \App\Models\User::all();
+
+
+        return \Response::json($data);
+    }
+     protected function login(){
+        $data   =   [];
+
+        $data = \App\Models\User::all();
+
+        return \Response::json($data);
     }
 }
