@@ -7,6 +7,8 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -28,9 +30,10 @@ class AuthController extends Controller
      *
      * @return void
      */
+    protected $redirectTo = '';
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
+        $this->middleware('guest', ['except' => ['getLogout', 'authLogin']]);
     }
 
     /**
@@ -55,59 +58,43 @@ class AuthController extends Controller
      * @return User
      */
     protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
-    }
-    protected function postLogin(array $data){
-       {
-        
-        $rules = array(
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-         );
-        $validator = Validator::make($data, $rules);
-        if ($validator->fails()){
-            // If validation falis redirect back to login.
-               // return redirect()->intended('/login')->withErrors($validator);
-            }
-            else{
+        {
+            return \User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+            ]);
+        }
+    
+    protected function postLogin(){
 
-            if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
-            // Authentication passed...
-                 if(Auth::user()->status == '0')
-                 {
-                    if(Auth::user()->role_id == '2'){
-                        //return redirect('/home');
-                    }else{
-                        return redirect()->intended('/admin');
-                    }
-                  }
-                  else{
+        $credentials = \Input::only('email', 'password');
 
-                     //return redirect('/logout');
-                  }
+        if (\Auth::attempt($credentials))
+        {
+            if(\Auth::User()->role_id = '2'){
+                $returnData['status']="200";
+                $returnData['role']='admin';
+                $returnData['id']=\Auth::User()->id;
 
-            }
-            else{
-                //return redirect('/login');
+            }else{
+                $returnData['status']="Success";
+                $returnData['role']='user'; 
+                $returnData['id']=\Auth::User()->id;
             }
         }
-        
+        else{
+             $returnData['status']="401";
 
-    }
-    
+        }
+        return \Response::json($returnData);
+       
 
     }
 
     protected function postRegister(array $data){
         if($this->validator($data)){
-
             $user= new User;
-
             $user->name=$data['name'];
             $user->email=$data['email'];
             $user->password=$data['password'];
@@ -121,22 +108,16 @@ class AuthController extends Controller
         }
 
     }
-    protected function plogin(){
-        $data   =   [];
 
-        $data['email'] = \Input::get('email');
-        $data['us'] =   'hii';
-
-        //$data = \App\Models\User::all();
-
-
+    protected function authLogin(){
+        
+        $data['status'] = \Auth::user() ? 1 : 0;
         return \Response::json($data);
+        //print_r(\Auth::user());
     }
      protected function login(){
         $data   =   [];
-
-        $data = \App\Models\User::all();
-
+        $data = User::all();
         return \Response::json($data);
     }
 }

@@ -13,20 +13,30 @@
 
 Route::get('/', function() {
 	 // header("Access-Control-Allow-Origin: *");
+	echo $password = Hash::make('123456');exit;
     return Response::json(['name' => 'Sujith']);
+
 });
 
 Route::group(['middleware' => 'cors'], function()
 {
     Route::get('/login','Auth\AuthController@login');
+    Route::post('/logind','Auth\AuthController@postLogin');
+    Route::post('/loginAuth','Auth\AuthController@authLogin');
+	Route::get('/loginAuth2','testController@logtest');
 
-
-   
 });
+Route::post('/log','Auth\AuthController@postLogin');
+Route::get('/log',function(){
+	return View::make('login');
+});
+Route::get('/loginAuth','testController@logtest');
+Route::get('/logout','Auth\AuthController@getLogout');
 
- Route::post('/logind',function(){
- 	 //header("Access-Control-Allow-Origin: x-requested-with");
- 	 // return Response::json(['name' => 'Sujith']);
- 	 return response(['name' => 'Sujith22'])
- 	 			->header('Access-Control-Allow-Origin', 'x-requested-with');
- });
+Route::get('/test', function() {
+	echo "User Id : " . Auth::id();
+});
+ // Route::post('/logind',function(){
+ // 	 header("Access-Control-Allow-Origin: *");
+ // 	 return Response::json(['name' => 'Sujith']);
+ // });
