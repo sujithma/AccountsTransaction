@@ -12,10 +12,8 @@
 */
 
 Route::get('/', function() {
-	 // header("Access-Control-Allow-Origin: *");
-	echo $password = Hash::make('123456');exit;
-    return Response::json(['name' => 'Sujith']);
-
+	 
+	echo "hiii this is index";
 });
 
 Route::group(['middleware' => 'cors'], function()
@@ -26,6 +24,7 @@ Route::group(['middleware' => 'cors'], function()
 	Route::get('/loginAuth2','testController@logtest');
 
 });
+
 Route::post('/log','Auth\AuthController@postLogin');
 Route::get('/log',function(){
 	return View::make('login');
@@ -36,7 +35,18 @@ Route::get('/logout','Auth\AuthController@getLogout');
 Route::get('/test', function() {
 	echo "User Id : " . Auth::id();
 });
- // Route::post('/logind',function(){
- // 	 header("Access-Control-Allow-Origin: *");
- // 	 return Response::json(['name' => 'Sujith']);
- // });
+
+
+Route::get('/reg',function(){
+	return View::make('register');
+});
+Route::post('/register','Auth\AuthController@postRegister');
+
+Route::group(array('middleware' => 'auth'), function()
+{
+	Route::get('/home',function(){
+
+		return View::make('home');
+	});
+	Route::post('/addcat','CategoryController@addCategory');
+});

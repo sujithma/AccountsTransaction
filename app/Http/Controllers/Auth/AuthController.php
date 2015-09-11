@@ -7,8 +7,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
+
 
 class AuthController extends Controller
 {
@@ -30,7 +29,7 @@ class AuthController extends Controller
      *
      * @return void
      */
-    protected $redirectTo = '';
+    protected $redirectTo = '\home';
     public function __construct()
     {
         $this->middleware('guest', ['except' => ['getLogout', 'authLogin']]);
@@ -57,20 +56,20 @@ class AuthController extends Controller
      * @param  array  $data
      * @return User
      */
-    protected function create(array $data)
-        {
-            return \User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => bcrypt($data['password']),
-            ]);
-        }
+    // protected function create(array $data)
+    //     {
+    //         return \User::create([
+    //             'name' => $data['name'],
+    //             'email' => $data['email'],
+    //             'password' => bcrypt($data['password']),
+    //         ]);
+    //     }
     
     protected function postLogin(){
 
         $credentials = \Input::only('email', 'password');
 
-        if (\Auth::attempt($credentials))
+        if (\Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password'] ]))
         {
             if(\Auth::User()->role_id = '2'){
                 $returnData['status']="200";
@@ -87,26 +86,25 @@ class AuthController extends Controller
              $returnData['status']="401";
 
         }
-        return \Response::json($returnData);
+        //return \Response::json($returnData);
+        return redirect('/home');
        
 
     }
 
-    protected function postRegister(array $data){
-        if($this->validator($data)){
-            $user= new User;
-            $user->name=$data['name'];
-            $user->email=$data['email'];
-            $user->password=$data['password'];
-            $user->role_id='1';
-
-            $user->save();
-
-        }
-        else{
-
-        }
-
+    protected function postRegister(){
+        $data['name'] = \Input::get('name');
+        $data['email'] = \Input::get('email');
+        $data['password'] = \Input::get('password');
+        $data['role_id'] = 1;
+        
+        $user= new \App\Models\User;
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = bcrypt($data['password']);
+        $user->role_id = '1';
+        $retData = $user->save() ? 200 : 500;
+        return \Response::json($retData);
     }
 
     protected function authLogin(){

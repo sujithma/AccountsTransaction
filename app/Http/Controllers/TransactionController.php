@@ -15,8 +15,6 @@ class TransactionController extends Controller
      *
      * @return void
      */
-    public $timestamps = false;
-    protected $table = "tasks";
     private $errors;
     private $rules=array(
             'title' => 'Required',
@@ -32,20 +30,34 @@ class TransactionController extends Controller
     }
     
 
-    public function addTransaction(array $data){
+    protected function addTransaction(){
 
-    $valid = \Validator::make($data,$this->rules);
-    if(!$valid->fails()) {
+        $data['title'] = \Input::get('title');
+        $data['description'] = \Input::get('description');
+        $data['category_id'] = \Input::get('category_id');
+        $data['status'] = \Input::get('status');
+        $data['transaction_date'] = \Input::get('transaction_date');
 
+        $transaction = new \Transaction;
+        $transaction->title = $data['title'];
+        $transaction->description = $data['description'];
+        $transaction->category_id = $data['category_id'];
+        $transaction->status = $data['status'];
+        $transaction->transaction_date = $data['transaction_date'];
+        $retData['status'] = $transaction->save() ? 200 : 500;
+
+        return \Response::json($retData);
+        
     }
 
+    protected function updateTransaction(){
 
     }
+    protected function deleteTransaction(){
 
-    public function updateTransaction(){
-
-    }
-    public function deleteTransaction(){
+        $id = \Input::get('id');
+        $transaction = \Transaction::find($id);
+        $retData['status'] = $transaction->delete() ? 200 : 500;
 
     }
 }
