@@ -15,7 +15,7 @@ class Role extends Model{
     protected $table = 'roles';
 
     public function users(){
-    	return $this->hasMany('\App\Models\User','role_id')
+    	return $this->hasMany('\App\Models\User','role_id');
     }
 
 }

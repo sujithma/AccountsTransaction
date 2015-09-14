@@ -29,7 +29,7 @@ class AuthController extends Controller
      *
      * @return void
      */
-    protected $redirectTo = '\home';
+    protected $redirectTo = '/';
     public function __construct()
     {
         $this->middleware('guest', ['except' => ['getLogout', 'authLogin']]);
@@ -86,8 +86,8 @@ class AuthController extends Controller
              $returnData['status']="401";
 
         }
-        //return \Response::json($returnData);
-        return redirect('/home');
+        return \Response::json($returnData);
+        // return redirect('/home');
        
 
     }

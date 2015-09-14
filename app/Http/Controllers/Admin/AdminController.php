@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Models\Role;
@@ -18,11 +18,11 @@ class AdminController extends Controller
     private $errors;
     public function __construct()
     {
-        $this->middleware('admin');
+        //$this->middleware('admin');
     }
     public function addRoles(){
-        $name = \Input::get('name');
-        $role = new \Role;
+        $name = \Input::get('role_name');
+        $role = new \App\Models\Role;
         $role->name = $name;
         $data['status'] = $role->save() ? 200 : 500;
         return \Response::json($data);
@@ -33,6 +33,10 @@ class AdminController extends Controller
         $role = \Role::find('id');
         $retData['status'] = $role->delete() ? 200 : 500;
         return \Response::json($retData);
+    }
+    public function viewRoles(){
+        $data = \App\Models\Role::all();
+        return \Response::json($data);
     }
     
 }

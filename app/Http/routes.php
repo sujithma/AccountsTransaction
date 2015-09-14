@@ -21,9 +21,16 @@ Route::group(['middleware' => 'cors'], function()
     Route::get('/login','Auth\AuthController@login');
     Route::post('/logind','Auth\AuthController@postLogin');
     Route::post('/loginAuth','Auth\AuthController@authLogin');
-	Route::get('/loginAuth2','testController@logtest');
+	Route::get('/logout','Auth\AuthController@getLogout');
+	Route::get('/role_view','Admin\AdminController@viewRoles');
+	Route::post('/role_add','Admin\AdminController@addRoles');
+
+	
 
 });
+
+
+
 
 Route::post('/log','Auth\AuthController@postLogin');
 Route::get('/log',function(){
