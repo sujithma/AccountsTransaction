@@ -22,38 +22,42 @@ Route::group(['middleware' => 'cors'], function()
     Route::post('/logind','Auth\AuthController@postLogin');
     Route::post('/loginAuth','Auth\AuthController@authLogin');
 	Route::get('/logout','Auth\AuthController@getLogout');
+
+	Route::get('/users','Admin\AdminController@viewUsers');
+
+	Route::get('/categories','Admin\AdminController@viewCategories');
+
 	Route::get('/role_view','Admin\AdminController@viewRoles');
 	Route::post('/role_add','Admin\AdminController@addRoles');
-
-	
+	Route::post('/role_delete','Admin\AdminController@deleteRole');
 
 });
 
 
+Route::get('/role_delete','Admin\AdminController@deleteRole');
+
+// Route::post('/log','Auth\AuthController@postLogin');
+// Route::get('/log',function(){
+// 	return View::make('login');
+// });
+// Route::get('/loginAuth','testController@logtest');
+// //Route::get('/logout','Auth\AuthController@getLogout');
+
+// Route::get('/test', function() {
+// 	echo "User Id : " . Auth::id();
+// });
 
 
-Route::post('/log','Auth\AuthController@postLogin');
-Route::get('/log',function(){
-	return View::make('login');
-});
-Route::get('/loginAuth','testController@logtest');
-Route::get('/logout','Auth\AuthController@getLogout');
+// Route::get('/reg',function(){
+// 	return View::make('register');
+// });
+// Route::post('/register','Auth\AuthController@postRegister');
 
-Route::get('/test', function() {
-	echo "User Id : " . Auth::id();
-});
+// Route::group(array('middleware' => 'auth'), function()
+// {
+// 	Route::get('/home',function(){
 
-
-Route::get('/reg',function(){
-	return View::make('register');
-});
-Route::post('/register','Auth\AuthController@postRegister');
-
-Route::group(array('middleware' => 'auth'), function()
-{
-	Route::get('/home',function(){
-
-		return View::make('home');
-	});
-	Route::post('/addcat','CategoryController@addCategory');
-});
+// 		return View::make('home');
+// 	});
+// 	Route::post('/addcat','CategoryController@addCategory');
+// });

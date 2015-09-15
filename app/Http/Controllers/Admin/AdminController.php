@@ -18,7 +18,7 @@ class AdminController extends Controller
     private $errors;
     public function __construct()
     {
-        //$this->middleware('admin');
+        $this->middleware('admin');
     }
     public function addRoles(){
         $name = \Input::get('role_name');
@@ -30,13 +30,23 @@ class AdminController extends Controller
     }
     public function deleteRole(){
         $id = \Input::get('id');
-        $role = \Role::find('id');
+        $role = \App\Models\Role::find('id');
         $retData['status'] = $role->delete() ? 200 : 500;
-        return \Response::json($retData);
+        return \Response::json($id);
     }
     public function viewRoles(){
         $data = \App\Models\Role::all();
         return \Response::json($data);
     }
+
+     public function viewUsers(){
+        $data = \App\Models\User::all();
+        return \Response::json($data);
+    }
+     public function viewCategories(){
+        $data = \App\Models\Category::all();
+        return \Response::json($data);
+    }
+
     
 }

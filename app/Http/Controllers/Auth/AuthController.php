@@ -118,4 +118,8 @@ class AuthController extends Controller
         $data = User::all();
         return \Response::json($data);
     }
+    protected function getLogout(){
+        $data['status'] =   \Auth::logout() ? 200 : 500;
+        return \Response::json($data);
+    }
 }
