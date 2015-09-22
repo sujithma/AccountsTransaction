@@ -33,6 +33,7 @@ Route::group(['middleware' => 'cors'], function()
 	Route::post('/role_add','Admin\AdminController@addRoles');
 	Route::post('/role_delete','Admin\AdminController@deleteRole');
 	Route::post('/role_edit','Admin\AdminController@editRole');
+	Route::post('/role_find','Admin\AdminController@findRole');
 
 
 	
@@ -40,34 +41,3 @@ Route::group(['middleware' => 'cors'], function()
 
 });
 
-
-
-Route::get('/role_delete','Admin\AdminController@deleteRole');
-	Route::get('/role_edit','Admin\AdminController@editRole');
-		Route::get('/user_add','Admin\AdminController@addUsers');
-
-// Route::post('/log','Auth\AuthController@postLogin');
-// Route::get('/log',function(){
-// 	return View::make('login');
-// });
-Route::get('/loginAuth','testController@logtest');
-// //Route::get('/logout','Auth\AuthController@getLogout');
-
-// Route::get('/test', function() {
-// 	echo "User Id : " . Auth::id();
-// });
-
-
-// Route::get('/reg',function(){
-// 	return View::make('register');
-// });
-// Route::post('/register','Auth\AuthController@postRegister');
-
-// Route::group(array('middleware' => 'auth'), function()
-// {
-// 	Route::get('/home',function(){
-
-// 		return View::make('home');
-// 	});
-// 	Route::post('/addcat','CategoryController@addCategory');
-// });

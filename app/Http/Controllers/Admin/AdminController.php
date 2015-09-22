@@ -49,7 +49,11 @@ class AdminController extends Controller
         $data = Role::all();
         return \Response::json($data);
     }
-
+    public function findRole(){
+        $id = \Input::get('id');
+        $role = Role::find($id);
+        return \Response::json($role);
+    }
      public function viewUsers(){
         $data = User::where('id', '!=', \Auth::id())->get();
         return \Response::json($data);
