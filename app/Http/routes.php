@@ -24,23 +24,33 @@ Route::group(['middleware' => 'cors'], function()
 	Route::get('/logout','Auth\AuthController@getLogout');
 
 	Route::get('/users','Admin\AdminController@viewUsers');
+	Route::post('/user_add','Admin\AdminController@addUsers');
+	Route::post('/user_delete','Admin\AdminController@deleteUser');
 
 	Route::get('/categories','Admin\AdminController@viewCategories');
 
 	Route::get('/role_view','Admin\AdminController@viewRoles');
 	Route::post('/role_add','Admin\AdminController@addRoles');
 	Route::post('/role_delete','Admin\AdminController@deleteRole');
+	Route::post('/role_edit','Admin\AdminController@editRole');
+
+
+	
+
 
 });
 
 
+
 Route::get('/role_delete','Admin\AdminController@deleteRole');
+	Route::get('/role_edit','Admin\AdminController@editRole');
+		Route::get('/user_add','Admin\AdminController@addUsers');
 
 // Route::post('/log','Auth\AuthController@postLogin');
 // Route::get('/log',function(){
 // 	return View::make('login');
 // });
-// Route::get('/loginAuth','testController@logtest');
+Route::get('/loginAuth','testController@logtest');
 // //Route::get('/logout','Auth\AuthController@getLogout');
 
 // Route::get('/test', function() {
