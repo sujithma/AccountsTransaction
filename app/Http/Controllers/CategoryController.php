@@ -25,23 +25,26 @@ class CategoryController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+      //  $this->middleware('auth');
     }
     
+    public function viewCategories(){
+        $data = Category::all();
+        return \Response::json($data);
+    }
+    public function addCategory(){
+        $data = \Input::all();
+        // $data['name'] = \Input::get('name');
+        // $data['parent_id'] = \Input::get('parent_id');
+        // $data['transaction_type'] = \Input::get('transaction_type');
 
-    protected function addCategory(){
+        // $category = new \App\Models\Category;
+        // $category->name = $data['name'];
+        // $category->parent_id = $data['parent_id'];
+        // $category->transaction_type = $data['transaction_type'];
+        // $retData['status'] = $category->save() ? 200 : 500;
 
-        $data['name'] = \Input::get('name');
-        $data['parent_id'] = \Input::get('parent_id');
-        $data['transaction_type'] = \Input::get('transaction_type');
-
-        $category = new \App\Models\Category;
-        $category->name = $data['name'];
-        $category->parent_id = $data['parent_id'];
-        $category->transaction_type = $data['transaction_type'];
-        $retData['status'] = $category->save() ? 200 : 500;
-
-        return \Response::json($retData);
+        return \Response::json($data);
     }
 
     protected function deleteCategory(){

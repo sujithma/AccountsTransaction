@@ -75,10 +75,7 @@ class AdminController extends Controller
         $retData['status'] = $user->delete() ? 200 : 500;
         return \Response::json($retData);
     }
-     public function viewCategories(){
-        $data = Category::all();
-        return \Response::json($data);
-    }
+     
 
     
 }
