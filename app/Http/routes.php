@@ -13,7 +13,7 @@
 
 Route::get('/', function() {
 	 
-	echo "hiii this is index";
+	echo  Hash::make('sujith');
 });
 
 Route::group(['middleware' => 'cors'], function()

@@ -71,7 +71,7 @@ class AuthController extends Controller
 
         if (\Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password'] ]))
         {
-            if(\Auth::User()->role_id = '2'){
+            if(\Auth::User()->role_id == '2'){
                 $returnData['status']="200";
                 $returnData['role']='admin';
                 $returnData['id']=\Auth::User()->id;
@@ -110,6 +110,7 @@ class AuthController extends Controller
     protected function authLogin(){
         
         $data['status'] = \Auth::user() ? 1 : 0;
+        $data['user'] = \Auth::user();
         return \Response::json($data);
         //print_r(\Auth::user());
     }
