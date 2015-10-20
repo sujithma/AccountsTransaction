@@ -31,9 +31,11 @@ class CategoryController extends Controller
         $category->name = $data['name'];
         $category->parent_id = $data['parent_id'];
         $category->transaction_type = $data['transaction_type'];
-         $retData['status'] = $category->save() ? 200 : 500;
+        $retData['status'] = $category->save() ? 200 : 500;
+        $retData['id'] = $category->id;
+        $retData['parent_id'] = $category->parent_id;
 
-        return \Response::json($data);
+        return \Response::json($retData);
     }
 
     public function deleteCategory(){
