@@ -22,10 +22,12 @@ class AdminController extends Controller
         //$this->middleware('admin');
     }
     public function addRoles(){
-        $name = \Input::get('role_name');
+        $name = \Input::get('name');
         $role = new Role;
         $role->name = $name;
         $data['status'] = $role->save() ? 200 : 500;
+        $data['role'] = $role->id;
+        $data['created_at']=$role->created_at;
         return \Response::json($data);
 
     }
@@ -60,14 +62,22 @@ class AdminController extends Controller
     }
     public function addUsers(){
         $data = \Input::all();
-        $user = new User;
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->password =  bcrypt($data['password']);
-        $user->role_id = $data['role'];
-        $data['status'] = $user->save() ? 200 : 500;
-        $data['userid'] = $user->id;
-        return \Response::json($data);
+        $userEmail = User::where('email','=',$data['email'])->get()->first();
+
+        if($userEmail){
+          
+            return \Response::json('alreday exist');
+        }else{
+
+            $user = new User;
+            $user->name = $data['name'];
+            $user->email = $data['email'];
+            $user->password =  bcrypt($data['password']);
+            $user->role_id = $data['role_id'];
+            $data['status'] = $user->save() ? 200 : 500;
+            $data['userid'] = $user->id;
+            return \Response::json($data);
+        }
     }
      public function deleteUser(){
         $id = \Input::get('id');
