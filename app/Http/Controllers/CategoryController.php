@@ -24,24 +24,32 @@ class CategoryController extends Controller
     public function addCategory(){
         $data = \Input::all();
         // $data['name'] = \Input::get('name');
-        $data['parent_id'] = ($data['parent_id'] == '') ? 0 : $data['parent_id']; 
-        $data['transaction_type'] = ($data['transaction_type'] == 'Cr') ? 1 : 0;
+        $exist = Category::withTrashed()->where('name','=',$data['name'])->get()->first();
+        if($exist){
+             $retData['data'] = $exist;
+             $retData['status'] = 409;
+        }else{
+            $data['parent_id'] = ($data['parent_id'] == '') ? 0 : $data['parent_id']; 
+            $data['transaction_type'] = ($data['transaction_type'] == 'Cr') ? 1 : 0;
 
-        $category = new Category;
-        $category->name = $data['name'];
-        $category->parent_id = $data['parent_id'];
-        $category->transaction_type = $data['transaction_type'];
-        $retData['status'] = $category->save() ? 200 : 500;
-        $retData['id'] = $category->id;
-        $retData['parent_id'] = $category->parent_id;
+            $category = new Category;
+            $category->name = $data['name'];
+            $category->parent_id = $data['parent_id'];
+            $category->transaction_type = $data['transaction_type'];
+            $retData['status'] = $category->save() ? 200 : 500;
+            $retData['id'] = $category->id;
+            $retData['parent_id'] = $category->parent_id;
 
+        }
+
+        
         return \Response::json($retData);
     }
 
     public function deleteCategory(){
         $id = \Input::all();
-        $category = Category::find($id);
-        $retData['status'] = $category->delete() ? 200 : 500;
+        $category = Category::find($id['id']);
+        $retData = $category->delete() ? 200 : 500;
         return \Response::json($retData);
     }
     public function updateCategory(){

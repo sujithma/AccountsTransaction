@@ -12,7 +12,7 @@ class Category extends Model{
      *
      * @var string
      */
-	
+	use SoftDeletes;
 	protected $dates = ['deleted_at'];
     protected $table = 'categories';
 
