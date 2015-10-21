@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\softDeletes;
 class Category extends Model{
 
 	/**
@@ -11,6 +12,8 @@ class Category extends Model{
      *
      * @var string
      */
+	
+	protected $dates = ['deleted_at'];
     protected $table = 'categories';
 
 	  public function transactions(){

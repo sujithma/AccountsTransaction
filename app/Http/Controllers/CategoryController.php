@@ -24,7 +24,7 @@ class CategoryController extends Controller
     public function addCategory(){
         $data = \Input::all();
         // $data['name'] = \Input::get('name');
-        $data['parent_id'] = ($data['parent_id'] == '') ? '' : $data['parent_id']; 
+        $data['parent_id'] = ($data['parent_id'] == '') ? 0 : $data['parent_id']; 
         $data['transaction_type'] = ($data['transaction_type'] == 'Cr') ? 1 : 0;
 
         $category = new Category;
@@ -39,7 +39,10 @@ class CategoryController extends Controller
     }
 
     public function deleteCategory(){
-
+        $id = \Input::all();
+        $category = Category::find($id);
+        $retData['status'] = $category->delete() ? 200 : 500;
+        return \Response::json($retData);
     }
     public function updateCategory(){
 
