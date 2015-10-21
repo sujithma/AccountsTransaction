@@ -52,7 +52,15 @@ class CategoryController extends Controller
         $retData = $category->delete() ? 200 : 500;
         return \Response::json($retData);
     }
-    public function updateCategory(){
-
+    public function viewTrash(){
+         $data = Category::onlyTrashed()->get();
+        return \Response::json($data);
     }
+    public function forceDeleteCategory(){
+        $id = \Input::all();
+        $category = Category::onlyTrashed()->where('id','=',$id['id'])->get();
+       // $retData = $category->forceDelete() ? 200 : 500;
+        return \Response::json($category);
+    }
+    
 }

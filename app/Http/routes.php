@@ -29,8 +29,10 @@ Route::group(['middleware' => 'cors'], function()
 	Route::post('/user_delete','Admin\AdminController@deleteUser');
 
 	Route::get('/categories','CategoryController@viewCategories');
+	Route::get('/categories/trash','CategoryController@viewTrash');
 	Route::post('/categories/add','CategoryController@addCategory');
 	Route::post('/categories/delete','CategoryController@deleteCategory');
+	Route::post('/categories/forceDelete','CategoryController@forceDeleteCategory');
 
 
 	Route::get('/role_view','Admin\AdminController@viewRoles');
