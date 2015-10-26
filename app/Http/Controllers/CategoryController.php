@@ -58,9 +58,16 @@ class CategoryController extends Controller
     }
     public function forceDeleteCategory(){
         $id = \Input::all();
-        $category = Category::onlyTrashed()->where('id','=',$id['id'])->get();
-       // $retData = $category->forceDelete() ? 200 : 500;
-        return \Response::json($category);
+        $category = Category::onlyTrashed()->where('id','=' ,$id['id'])->get()->first();
+        $retData = $category->forceDelete() ? 200 : 500;
+        return \Response::json($retData);
     }
+     public function restoreCategory(){
+        $id = \Input::all();
+        $category = Category::onlyTrashed()->where('id','=' ,$id['id'])->get()->first();
+        $retData = $category->restore() ? 200 : 500;
+        return \Response::json($retData);
+    }
+    
     
 }

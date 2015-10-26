@@ -33,6 +33,7 @@ Route::group(['middleware' => 'cors'], function()
 	Route::post('/categories/add','CategoryController@addCategory');
 	Route::post('/categories/delete','CategoryController@deleteCategory');
 	Route::post('/categories/forceDelete','CategoryController@forceDeleteCategory');
+	Route::post('/categories/restore','CategoryController@restoreCategory');
 
 
 	Route::get('/role_view','Admin\AdminController@viewRoles');
