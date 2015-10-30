@@ -18,10 +18,8 @@ class CreateTransactionsTable extends Migration
             $table->string('description');
             $table->integer('user_id');
             $table->integer('category_id');
-            $table->integer('status');
-           
             $table->datetime('transaction_date');
-
+            $table->enum('transaction_type',['credit','debit']);
             $table->timestamps();    
         });
      }

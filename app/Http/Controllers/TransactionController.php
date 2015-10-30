@@ -15,34 +15,32 @@ class TransactionController extends Controller
      *
      * @return void
      */
-    private $errors;
-    private $rules=array(
-            'title' => 'Required',
-            'description' => 'Required',
-            'category_id' => 'Required',
-            'status' => 'Required',
-            'transaction_date' => 'Required'
-            );
+   
 
     public function __construct()
     {
-        $this->middleware('auth');
+       // $this->middleware('auth');
     }
     
+    public function viewTransactions(){
+        $data = Transaction::with('users','categories')->get();
+        return \Response::json($data);
+    }
 
-    protected function addTransaction(){
-
+    public function addTransaction(){
         $data['title'] = \Input::get('title');
         $data['description'] = \Input::get('description');
         $data['category_id'] = \Input::get('category_id');
-        $data['status'] = \Input::get('status');
-        $data['transaction_date'] = \Input::get('transaction_date');
+        $data['transaction_type'] = \Input::get('transaction_type');
+        $data['transaction_date'] = \Input::get('date');
+        $data['user_id'] = \Auth::id();
 
-        $transaction = new \Transaction;
+        $transaction = new Transaction;
         $transaction->title = $data['title'];
         $transaction->description = $data['description'];
         $transaction->category_id = $data['category_id'];
-        $transaction->status = $data['status'];
+        $transaction->user_id = $data['user_id'];
+        $transaction->transaction_type = $data['transaction_type'];
         $transaction->transaction_date = $data['transaction_date'];
         $retData['status'] = $transaction->save() ? 200 : 500;
 
@@ -53,11 +51,16 @@ class TransactionController extends Controller
     protected function updateTransaction(){
 
     }
-    protected function deleteTransaction(){
-
+    public function deleteTransaction(){
+        $id = \Input::get('id');        
+        $transaction = Transaction::find($id);
+        $retData['status'] = $transaction->forceDelete() ? 200 : 500;
+        return \Response::json($retData);
+    }
+    public function forceDeleteTransaction(){
         $id = \Input::get('id');
-        $transaction = \Transaction::find($id);
-        $retData['status'] = $transaction->delete() ? 200 : 500;
-
+        $transaction = Transaction::where('id','=' ,$id)->first();
+        $retData = $transaction->Delete() ? 200 : 500; 
+        return \Response::json($retData);
     }
 }
