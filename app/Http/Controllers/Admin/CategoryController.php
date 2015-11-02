@@ -31,6 +31,7 @@ class CategoryController extends Controller
         }else{
             $data['parent_id'] = ($data['parent_id'] == '') ? 0 : $data['parent_id']; 
 
+
             $category = new Category;
             $category->name = $data['name'];
             $category->parent_id = $data['parent_id'];
