@@ -30,12 +30,11 @@ class CategoryController extends Controller
              $retData['status'] = 409;
         }else{
             $data['parent_id'] = ($data['parent_id'] == '') ? 0 : $data['parent_id']; 
-            $data['transaction_type'] = ($data['transaction_type'] == 'Cr') ? 1 : 0;
+
 
             $category = new Category;
             $category->name = $data['name'];
             $category->parent_id = $data['parent_id'];
-            $category->transaction_type = $data['transaction_type'];
             $retData['status'] = $category->save() ? 200 : 500;
             $retData['id'] = $category->id;
             $retData['parent_id'] = $category->parent_id;
