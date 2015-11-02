@@ -28,12 +28,12 @@ Route::group(['middleware' => 'cors'], function()
 	Route::post('/user_add','Admin\AdminController@addUsers');
 	Route::post('/user_delete','Admin\AdminController@deleteUser');
 
-	Route::get('/categories','CategoryController@viewCategories');
-	Route::get('/categories/trash','CategoryController@viewTrash');
-	Route::post('/categories/add','CategoryController@addCategory');
-	Route::post('/categories/delete','CategoryController@deleteCategory');
-	Route::post('/categories/forceDelete','CategoryController@forceDeleteCategory');
-	Route::post('/categories/restore','CategoryController@restoreCategory');
+	Route::get('/categories','Admin\CategoryController@viewCategories');
+	Route::get('/categories/trash','Admin\CategoryController@viewTrash');
+	Route::post('/categories/add','Admin\CategoryController@addCategory');
+	Route::post('/categories/delete','Admin\CategoryController@deleteCategory');
+	Route::post('/categories/forceDelete','Admin\CategoryController@forceDeleteCategory');
+	Route::post('/categories/restore','Admin\CategoryController@restoreCategory');
 
 
 	Route::get('/role_view','Admin\AdminController@viewRoles');

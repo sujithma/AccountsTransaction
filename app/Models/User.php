@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\softDeletes;
 
 use App\Models\Role;
 
@@ -17,6 +18,7 @@ class User extends Model implements AuthenticatableContract,
                                     CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
+    use SoftDeletes;
 
     /**
      * The database table used by the model.
@@ -25,6 +27,8 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $table = 'users';
     protected $hidden = array('password', 'remember_token');
+
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.

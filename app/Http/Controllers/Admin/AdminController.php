@@ -85,7 +85,10 @@ class AdminController extends Controller
         $retData['status'] = $user->delete() ? 200 : 500;
         return \Response::json($retData);
     }
-     
+    public function viewTrash(){
+         $data = User::onlyTrashed()->get();
+        return \Response::json($data);
+    }
 
     
 }

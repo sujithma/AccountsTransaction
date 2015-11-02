@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Illuminate\Database\Eloquent\softDeletes;
 class Role extends Model{
 
 	/**
@@ -12,8 +13,9 @@ class Role extends Model{
      *
      * @var string
      */
+	use SoftDeletes;
     protected $table = 'roles';
-
+    protected $dates = ['deleted_at'];
     public function users(){
     	return $this->hasMany('\App\Models\User','role_id');
     }
