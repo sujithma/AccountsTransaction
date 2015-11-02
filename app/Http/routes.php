@@ -43,9 +43,11 @@ Route::group(['middleware' => 'cors'], function()
 	Route::post('/role_find','Admin\AdminController@findRole');
 
 	Route::get('/transactions','TransactionController@viewTransactions');
+	Route::get('/transactions/trash','TransactionController@viewTrash');
 	Route::post('/transactions/add','TransactionController@addTransaction');
 	Route::post('/transactions/delete','TransactionController@deleteTransaction');
 	Route::post('/transactions/forceDelete','TransactionController@forceDeleteTransaction');
+	Route::post('/transactions/restore','TransactionController@restoreTransaction');
 	
 
 

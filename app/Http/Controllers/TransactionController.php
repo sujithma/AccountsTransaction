@@ -63,4 +63,15 @@ class TransactionController extends Controller
         $retData = $transaction->Delete() ? 200 : 500; 
         return \Response::json($retData);
     }
+    public function viewTrash(){
+         $data = Transaction::with('users','categories')->onlyTrashed()->get();
+        return \Response::json($data);
+    }
+    public function restoreTransaction(){
+        $id = \Input::get('id');
+        $category = Transaction::onlyTrashed()->where('id','=' ,$id)->get()->first();
+        $retData = $category->restore() ? 200 : 500;
+        return \Response::json($retData);
+    }
+    
 }

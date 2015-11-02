@@ -60,7 +60,7 @@ class CategoryController extends Controller
         $retData = $category->forceDelete() ? 200 : 500;
         return \Response::json($retData);
     }
-     public function restoreCategory(){
+    public function restoreCategory(){
         $id = \Input::all();
         $category = Category::onlyTrashed()->where('id','=' ,$id['id'])->get()->first();
         $retData = $category->restore() ? 200 : 500;
