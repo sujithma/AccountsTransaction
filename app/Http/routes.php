@@ -36,18 +36,21 @@ Route::group(['middleware' => 'cors'], function()
 	Route::post('/categories/restore','Admin\CategoryController@restoreCategory');
 
 
-	Route::get('/role_view','Admin\AdminController@viewRoles');
-	Route::post('/role_add','Admin\AdminController@addRoles');
-	Route::post('/role_delete','Admin\AdminController@deleteRole');
-	Route::post('/role_edit','Admin\AdminController@editRole');
-	Route::post('/role_find','Admin\AdminController@findRole');
+	Route::get('/roles/view','Admin\RolesController@viewRoles');
+	Route::post('/roles/add','Admin\RolesController@addRoles');
+	Route::post('/roles/delete','Admin\RolesController@deleteRole');
+	Route::post('/roles/edit','Admin\RolesController@editRole');
+	Route::post('/roles/role_find','Admin\RolesController@findRole');
+	Route::get('/roles/trash','Admin\RolesController@viewTrash');
+	Route::post('roles/restore','Admin\RolesController@restoreRole');
+	Route::post('/roles/forceDelete','Admin\RolesController@PermanentDeleteRole');
 
 	Route::get('/transactions','TransactionController@viewTransactions');
 	Route::get('/transactions/trash','TransactionController@viewTrash');
 	Route::post('/transactions/add','TransactionController@addTransaction');
 	Route::post('/transactions/delete','TransactionController@deleteTransaction');
-	Route::post('/transactions/forceDelete','TransactionController@forceDeleteTransaction');
 	Route::post('/transactions/restore','TransactionController@restoreTransaction');
+	Route::post('/transactions/forceDelete','TransactionController@PermanentDeleteTransaction');
 	
 
 

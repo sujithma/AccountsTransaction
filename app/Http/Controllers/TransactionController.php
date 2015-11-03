@@ -51,10 +51,10 @@ class TransactionController extends Controller
     protected function updateTransaction(){
 
     }
-    public function deleteTransaction(){
+    public function PermanentDeleteTransaction(){
         $id = \Input::get('id');        
-        $transaction = Transaction::find($id);
-        $retData['status'] = $transaction->forceDelete() ? 200 : 500;
+        $transaction = Transaction::onlyTrashed()->where('id','=' ,$id)->first();
+        $retData = $transaction->forceDelete() ? 200 : 500;
         return \Response::json($retData);
     }
     public function forceDeleteTransaction(){
