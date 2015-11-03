@@ -59,8 +59,8 @@ class TransactionController extends Controller
     }
     public function forceDeleteTransaction(){
         $id = \Input::get('id');
-        $transaction = Transaction::where('id','=' ,$id)->first();
-        $retData = $transaction->Delete() ? 200 : 500; 
+        $transaction = Transaction::withTrashed()->where('id','=' ,$id)->first();
+        $retData = $transaction->forceDelete() ? 200 : 500; 
         return \Response::json($retData);
     }
     public function viewTrash(){
