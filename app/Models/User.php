@@ -45,7 +45,7 @@ class User extends Model implements AuthenticatableContract,
    // protected $hidden = ['password', 'remember_token'];
 
     public function roles(){
-        return $this->belongsTo('\App\Models\Role', 'id');
+        return $this->belongsTo('\App\Models\Role', 'role_id');
     }
     public function transactions(){
         return $this->hasMAny('\App\Models\Transaction','user_id');

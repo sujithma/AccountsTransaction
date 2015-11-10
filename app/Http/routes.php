@@ -25,8 +25,12 @@ Route::group(['middleware' => 'cors'], function()
 	Route::get('/logout','Auth\AuthController@getLogout');
 
 	Route::get('/users','Admin\AdminController@viewUsers');
-	Route::post('/user_add','Admin\AdminController@addUsers');
-	Route::post('/user_delete','Admin\AdminController@deleteUser');
+	Route::post('/users/add','Admin\AdminController@addUsers');
+	Route::post('/users/edit','Admin\AdminController@editUser');
+	Route::post('/users/delete','Admin\AdminController@deleteUser');
+	Route::post('/users/trash','Admin\AdminController@viewTrash');
+	Route::post('/users/restore','Admin\AdminController@restoreUser');
+	Route::post('/users/status','Admin\AdminController@changeStatus');
 
 	Route::get('/categories','Admin\CategoryController@viewCategories');
 	Route::get('/categories/trash','Admin\CategoryController@viewTrash');

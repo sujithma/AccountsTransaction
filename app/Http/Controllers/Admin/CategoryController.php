@@ -52,7 +52,7 @@ class CategoryController extends Controller
         return \Response::json($retData);
     }
     public function viewTrash(){
-         $data = Category::onlyTrashed()->get();
+         $data = Category::with('subcategories')->onlyTrashed()->get();
         return \Response::json($data);
     }
     public function forceDeleteCategory(){

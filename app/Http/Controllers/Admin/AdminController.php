@@ -21,43 +21,9 @@ class AdminController extends Controller
     {
         //$this->middleware('admin');
     }
-    public function addRoles(){
-        $name = \Input::get('name');
-        $role = new Role;
-        $role->name = $name;
-        $data['status'] = $role->save() ? 200 : 500;
-        $data['role'] = $role->id;
-        $data['created_at']=$role->created_at;
-        return \Response::json($data);
 
-    }
-    public function deleteRole(){
-        $id = \Input::get('id');
-        $role = Role::find($id);
-        $retData['status'] = $role->delete() ? 200 : 500;
-        return \Response::json($retData);
-    }
-    public function editRole(){
-
-        $role_id = \Input::get('id');
-        $role_name = \Input::get('role_name');
-        $role = Role::find( $role_id);
-        $role->name = $role_name;
-        $data['status'] = $role->save() ? 200 : 500;
-        return \Response::json($data);
-
-    }
-    public function viewRoles(){
-        $data = Role::all();
-        return \Response::json($data);
-    }
-    public function findRole(){
-        $id = \Input::get('id');
-        $role = Role::find($id);
-        return \Response::json($role);
-    }
-     public function viewUsers(){
-        $data = User::where('id', '!=', \Auth::id())->get();
+    public function viewUsers(){
+        $data = User::with('roles')->where('id', '!=', \Auth::id())->get();
         return \Response::json($data);
     }
     public function addUsers(){
@@ -65,28 +31,62 @@ class AdminController extends Controller
         $userEmail = User::where('email','=',$data['email'])->get()->first();
 
         if($userEmail){
-          
             return \Response::json('alreday exist');
         }else{
-
             $user = new User;
             $user->name = $data['name'];
             $user->email = $data['email'];
             $user->password =  bcrypt($data['password']);
             $user->role_id = $data['role_id'];
+            $user->status = 1;
             $data['status'] = $user->save() ? 200 : 500;
             $data['userid'] = $user->id;
             return \Response::json($data);
         }
+         
     }
-     public function deleteUser(){
+    public function editUser() {
+        $data = \Input::all();
+        $id = $data['id'];
+        $userEmail = User::where('id', '!=', $id)
+                            ->where('email','=',$data['email'])
+                            ->get()->first();
+        if($userEmail){
+            return \Response::json('alreday exist');
+        }else{
+            
+            $user = User::find($id);
+            $user->name = $data['name'];
+            $user->email = $data['email'];
+            $user->role_id = $data['role_id'];
+            $data['status'] = $user->save() ? 200 : 500;
+            return \Response::json($data);
+        }
+    }
+    public function deleteUser(){
         $id = \Input::get('id');
         $user = User::find($id);
         $retData['status'] = $user->delete() ? 200 : 500;
         return \Response::json($retData);
     }
     public function viewTrash(){
-         $data = User::onlyTrashed()->get();
+         $data = User::with('roles')->onlyTrashed()->get();
+        return \Response::json($data);
+    }
+    public function restoreUser(){
+        $data = [];
+        $id = \Input::get('id');
+        $user = User::onlyTrashed()->where('id','=' ,$id)->get()->first();
+        $data['retData'] = $user->restore() ? 200 : 500;
+        $data['user'] = $user;
+        return \Response::json($data);
+    }
+    public function changeStatus() {
+        $id = \Input::get('id');
+        $user = User::find($id);
+        $status=$user->status;        
+        $user->status = $user->status==0 ? 1 : 0;
+        $data['status'] = $user->save() ? 200 : 500;
         return \Response::json($data);
     }
 

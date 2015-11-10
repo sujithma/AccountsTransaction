@@ -16,7 +16,10 @@ class Category extends Model{
 	protected $dates = ['deleted_at'];
     protected $table = 'categories';
 
-	  public function transactions(){
-	        return $this->hasMany('\App\Models\transaction','category_id');
-	    }
+	public function transactions(){
+	    return $this->hasMany('\App\Models\transaction','category_id');
+	}
+	public function subcategories(){
+	    return $this->belongsTo('\App\Models\Category','parent_id');
+	}
 }
