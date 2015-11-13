@@ -45,6 +45,26 @@ class CategoryController extends Controller
         return \Response::json($retData);
     }
 
+    public function editCategory(){
+        $data = \Input::all();
+        $id = $data['id'];
+        $name = $data['name'];
+        $exist = Category::withTrashed()->where('id', '!=', $id)
+                            ->where('name','=',$name)
+                            ->get()->first();
+        if($exist){
+             $retData['data'] = $exist;
+             $retData['status'] = 409;
+        }else{
+            $category = Category::find($id);
+            $category->name = $name;
+            $category->parent_id = $data['parent_id'];
+            $retData['status'] = $category->save() ? 200 : 500;
+
+        }
+        return \Response::json($retData);
+    }
+
     public function deleteCategory(){
         $id = \Input::all();
         $category = Category::find($id['id']);

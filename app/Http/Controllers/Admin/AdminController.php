@@ -25,6 +25,11 @@ class AdminController extends Controller
     public function viewUsers(){
         $data = User::with('roles')->where('id', '!=', \Auth::id())->get();
         return \Response::json($data);
+        
+    }
+    public function allUsers() {
+        $data = User::get();
+        return \Response::json($data);
     }
     public function addUsers(){
         $data = \Input::all();

@@ -69,7 +69,7 @@ class AuthController extends Controller
 
         $credentials = \Input::only('email', 'password');
 
-        if (\Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password'] ]))
+        if (\Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password'],'status' => 1 ]))
         {
             if(\Auth::User()->role_id == '2'){
                 $returnData['status']="200";

@@ -33,6 +33,7 @@ class TransactionController extends Controller
         $data['category_id'] = \Input::get('category_id');
         $data['transaction_type'] = \Input::get('transaction_type');
         $data['transaction_date'] = \Input::get('date');
+        $date = \Carbon\Carbon::parse($data['transaction_date'])->format('Y-m-d');
         $data['user_id'] = \Auth::id();
 
         $transaction = new Transaction;
@@ -41,8 +42,10 @@ class TransactionController extends Controller
         $transaction->category_id = $data['category_id'];
         $transaction->user_id = $data['user_id'];
         $transaction->transaction_type = $data['transaction_type'];
-        $transaction->transaction_date = $data['transaction_date'];
+        $transaction->transaction_date = $date;
         $retData['status'] = $transaction->save() ? 200 : 500;
+        $id = $transaction->id;
+        $retData['user'] = Transaction::with('users','categories')->find($id);
 
         return \Response::json($retData);
         
@@ -57,10 +60,10 @@ class TransactionController extends Controller
         $retData = $transaction->forceDelete() ? 200 : 500;
         return \Response::json($retData);
     }
-    public function forceDeleteTransaction(){
+    public function delete(){
         $id = \Input::get('id');
-        $transaction = Transaction::withTrashed()->where('id','=' ,$id)->first();
-        $retData = $transaction->forceDelete() ? 200 : 500; 
+        $transaction = Transaction::find($id);
+        $retData = $transaction->delete() ? 200 : 500; 
         return \Response::json($retData);
     }
     public function viewTrash(){
@@ -74,4 +77,22 @@ class TransactionController extends Controller
         return \Response::json($retData);
     }
     
+    public function search() {
+        $type = \Input::get('type');
+        $userId = \Input::get('userId');
+        $data = Transaction::with('users','categories');
+        if($type){
+            $data = $data->where('transaction_type', '=', $type);
+        }
+        if($userId){
+            $data = $data->where('user_id', '=', $userId);
+        }
+        $data = $data->get();
+        // $data['ty']=$type;
+        // $data['us']=$userId;
+
+        return \Response::json($data);
+
+
+    }
 }
