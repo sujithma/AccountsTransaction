@@ -32,7 +32,7 @@ class AuthController extends Controller
     protected $redirectTo = '/';
     public function __construct()
     {
-        $this->middleware('guest', ['except' => ['getLogout', 'authLogin']]);
+        $this->middleware('guest', ['except' => ['getLogout', 'authLogin', 'getProfile', 'editIamge','saveProfile']]);
     }
 
     /**
@@ -122,5 +122,44 @@ class AuthController extends Controller
     protected function getLogout(){
         $data['status'] =   \Auth::logout() ? 200 : 500;
         return \Response::json($data);
+    }
+    public function getProfile() {
+        $user = \Auth::User();
+        return \Response::json($user);
+    }
+
+    public function saveProfile() {
+        $input = \Input::all();
+        $user = \Auth::User();
+        // $current = $input['current'];
+        // $existing = $user->password;
+        // $data = \Hash::check($current, $existing);
+        // return \Response::json($data); 
+        if (array_key_exists('current', $input)) {
+            $existing = $user->password;
+            $current = $input['current'];
+            if (\Hash::check($current, $existing)){
+                $user->password = bcrypt($input['new']);
+            }
+            else {
+                return \Response::json('mismatch');
+            }
+        }
+        $user->name = $input['name'];
+        $retData = $user->save() ? 200 : 500;
+        return \Response::json($retData);
+    }
+
+    public function editIamge() {
+        $input = \Input::all();
+        $image = \Input::file('image');
+        // if($image)  {
+        //     $filename = time()."-".$image->getClientOriginalName();                
+        //     $path = 'uploads/profile/'.$filename; 
+        //     \Image::make($image->getRealPath())->resize(200, 200)->save($path);                            
+            
+        //     return \Response::json($image);
+        // }
+        return \Response::json($image);
     }
 }

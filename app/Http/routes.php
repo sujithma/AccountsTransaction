@@ -24,14 +24,11 @@ Route::group(['middleware' => 'cors'], function()
     Route::post('/loginAuth','Auth\AuthController@authLogin');
 	Route::get('/logout','Auth\AuthController@getLogout');
 
-	Route::get('/users','Admin\AdminController@viewUsers');
-	Route::get('users/allUsers','Admin\AdminController@allUsers');
-	Route::post('/users/add','Admin\AdminController@addUsers');
-	Route::post('/users/edit','Admin\AdminController@editUser');
-	Route::post('/users/delete','Admin\AdminController@deleteUser');
-	Route::post('/users/trash','Admin\AdminController@viewTrash');
-	Route::post('/users/restore','Admin\AdminController@restoreUser');
-	Route::post('/users/status','Admin\AdminController@changeStatus');	
+	Route::get('/profile','Auth\AuthController@getProfile');
+	Route::post('/profile/edit/image','Auth\AuthController@editIamge');
+	Route::post('/profile/save','Auth\AuthController@saveProfile');
+
+		
 
 	Route::get('/categories','Admin\CategoryController@viewCategories');
 	Route::get('/categories/trash','Admin\CategoryController@viewTrash');
@@ -58,8 +55,16 @@ Route::group(['middleware' => 'cors'], function()
 	Route::post('/transactions/delete','TransactionController@delete');
 	Route::post('/transactions/restore','TransactionController@restoreTransaction');
 	Route::post('/transactions/forceDelete','TransactionController@PermanentDeleteTransaction');
-	
+// });
 
-
+// Route::group(['middleware' => ['cors', 'admin']], function()
+// {
+	Route::get('/users','Admin\AdminController@viewUsers');
+	Route::get('users/allUsers','Admin\AdminController@allUsers');
+	Route::post('/users/add','Admin\AdminController@addUsers');
+	Route::post('/users/edit','Admin\AdminController@editUser');
+	Route::post('/users/delete','Admin\AdminController@deleteUser');
+	Route::post('/users/trash','Admin\AdminController@viewTrash');
+	Route::post('/users/restore','Admin\AdminController@restoreUser');
+	Route::post('/users/status','Admin\AdminController@changeStatus');
 });
-
