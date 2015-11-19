@@ -28,20 +28,24 @@ class TransactionController extends Controller
     }
 
     public function addTransaction(){
+        $editId = \Input::get('editId');
         $data['title'] = \Input::get('title');
         $data['description'] = \Input::get('description');
         $data['category_id'] = \Input::get('category_id');
         $data['transaction_type'] = \Input::get('transaction_type');
         $data['transaction_date'] = \Input::get('date');
+        $data['amount'] = \Input::get('amount');
         $date = \Carbon\Carbon::parse($data['transaction_date'])->format('Y-m-d');
         $data['user_id'] = \Auth::id();
 
-        $transaction = new Transaction;
+        $transaction = $editId ? Transaction::find($editId) : new Transaction;
+
         $transaction->title = $data['title'];
         $transaction->description = $data['description'];
         $transaction->category_id = $data['category_id'];
         $transaction->user_id = $data['user_id'];
         $transaction->transaction_type = $data['transaction_type'];
+        $transaction->amount = $data['amount'];
         $transaction->transaction_date = $date;
         $retData['status'] = $transaction->save() ? 200 : 500;
         $id = $transaction->id;
