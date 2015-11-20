@@ -18,7 +18,7 @@ class CategoryController extends Controller
     }
     
     public function viewCategories(){
-        $data = Category::all();
+        $data = Category::with('subcategories')->get();
         return \Response::json($data);
     }
     public function addCategory(){
@@ -36,12 +36,9 @@ class CategoryController extends Controller
             $category->name = $data['name'];
             $category->parent_id = $data['parent_id'];
             $retData['status'] = $category->save() ? 200 : 500;
-            $retData['id'] = $category->id;
-            $retData['parent_id'] = $category->parent_id;
-
+            $id = $category->id;
+            $retData['category'] = Category::with('subcategories')->find($id);
         }
-
-        
         return \Response::json($retData);
     }
 
@@ -72,7 +69,7 @@ class CategoryController extends Controller
         return \Response::json($retData);
     }
     public function viewTrash(){
-         $data = Category::with('subcategories')->onlyTrashed()->get();
+        $data = Category::with('subcategories')->onlyTrashed()->get();
         return \Response::json($data);
     }
     public function forceDeleteCategory(){

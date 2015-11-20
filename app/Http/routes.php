@@ -22,6 +22,11 @@ Route::group(['middleware' => 'cors'], function()
     Route::get('/login','Auth\AuthController@login');
     Route::post('/logind','Auth\AuthController@postLogin');
     Route::post('/loginAuth','Auth\AuthController@authLogin');
+});
+
+
+Route::group(['middleware' => 'cors','auth'], function()
+{
 	Route::get('/logout','Auth\AuthController@getLogout');
 
 	Route::get('/profile','Auth\AuthController@getProfile');
@@ -39,14 +44,7 @@ Route::group(['middleware' => 'cors'], function()
 	Route::post('/categories/restore','Admin\CategoryController@restoreCategory');
 
 
-	Route::get('/roles/view','Admin\RolesController@viewRoles');
-	Route::post('/roles/add','Admin\RolesController@addRoles');
-	Route::post('/roles/delete','Admin\RolesController@deleteRole');
-	Route::post('/roles/edit','Admin\RolesController@editRole');
-	Route::post('/roles/role_find','Admin\RolesController@findRole');
-	Route::get('/roles/trash','Admin\RolesController@viewTrash');
-	Route::post('roles/restore','Admin\RolesController@restoreRole');
-	Route::post('/roles/forceDelete','Admin\RolesController@PermanentDeleteRole');
+	
 
 	Route::get('/transactions','TransactionController@viewTransactions');
 	Route::get('/transactions/trash','TransactionController@viewTrash');
@@ -55,16 +53,27 @@ Route::group(['middleware' => 'cors'], function()
 	Route::post('/transactions/delete','TransactionController@delete');
 	Route::post('/transactions/restore','TransactionController@restoreTransaction');
 	Route::post('/transactions/forceDelete','TransactionController@PermanentDeleteTransaction');
-// });
+});
 
-// Route::group(['middleware' => ['cors', 'admin']], function()
-// {
+Route::group(['middleware' => ['cors', 'admin']], function()
+{
 	Route::get('/users','Admin\AdminController@viewUsers');
-	Route::get('users/allUsers','Admin\AdminController@allUsers');
+	Route::get('users/all','Admin\AdminController@allUsers');
 	Route::post('/users/add','Admin\AdminController@addUsers');
 	Route::post('/users/edit','Admin\AdminController@editUser');
 	Route::post('/users/delete','Admin\AdminController@deleteUser');
 	Route::post('/users/trash','Admin\AdminController@viewTrash');
 	Route::post('/users/restore','Admin\AdminController@restoreUser');
+	Route::post('/users/permanentDelete','Admin\AdminController@permanentDelete');
 	Route::post('/users/status','Admin\AdminController@changeStatus');
+
+
+	Route::get('/roles/view','Admin\RolesController@viewRoles');
+	Route::post('/roles/add','Admin\RolesController@addRoles');
+	Route::post('/roles/delete','Admin\RolesController@deleteRole');
+	Route::post('/roles/edit','Admin\RolesController@editRole');
+	Route::post('/roles/role_find','Admin\RolesController@findRole');
+	Route::get('/roles/trash','Admin\RolesController@viewTrash');
+	Route::post('roles/restore','Admin\RolesController@restoreRole');
+	Route::post('/roles/forceDelete','Admin\RolesController@PermanentDeleteRole');
 });

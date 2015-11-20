@@ -27,10 +27,12 @@ class AdminController extends Controller
         return \Response::json($data);
         
     }
+
     public function allUsers() {
-        $data = User::get();
+        $data = User::all();
         return \Response::json($data);
     }
+
     public function addUsers(){
         $data = \Input::all();
         $userEmail = User::where('email','=',$data['email'])->get()->first();
@@ -39,13 +41,14 @@ class AdminController extends Controller
             return \Response::json('alreday exist');
         }else{
             $user = new User;
-            $user->name = $data['name'];
+            $user->name = $data['fname'];
             $user->email = $data['email'];
             $user->password =  bcrypt($data['password']);
             $user->role_id = $data['role_id'];
             $user->status = 1;
             $data['status'] = $user->save() ? 200 : 500;
-            $data['userid'] = $user->id;
+            $userid = $user->id;
+            $data['user'] = User::with('roles')->find($userid);
             return \Response::json($data);
         }
          
@@ -65,6 +68,7 @@ class AdminController extends Controller
             $user->email = $data['email'];
             $user->role_id = $data['role_id'];
             $data['status'] = $user->save() ? 200 : 500;
+            $data['user'] = User::with('roles')->find($id);
             return \Response::json($data);
         }
     }
@@ -93,6 +97,12 @@ class AdminController extends Controller
         $user->status = $user->status==0 ? 1 : 0;
         $data['status'] = $user->save() ? 200 : 500;
         return \Response::json($data);
+    }
+    public function permanentDelete() {
+        $id = \Input::get('id');        
+        $user = User::onlyTrashed()->where('id','=' ,$id)->first();
+        $retData = $user->forceDelete() ? 200 : 500;
+        return \Response::json($retData);
     }
 
     

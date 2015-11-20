@@ -54,10 +54,7 @@ class TransactionController extends Controller
         return \Response::json($retData);
         
     }
-
-    protected function updateTransaction(){
-
-    }
+    
     public function PermanentDeleteTransaction(){
         $id = \Input::get('id');        
         $transaction = Transaction::onlyTrashed()->where('id','=' ,$id)->first();
